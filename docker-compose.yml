@@ -1,0 +1,11 @@
+version: "3.7"
+services:
+  app:
+    image: harbor.lexmea.de/bewerber/probeaufgabe:latest
+    working_dir: /app
+    restart: "always"
+    volumes:
+      - ./:/app:cached
+    ports:
+      - "8080:8080"
+    command: "npm run serve -- --port 8080"
