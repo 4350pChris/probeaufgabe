@@ -3,7 +3,7 @@
     <header>
       <NavBar />
     </header>
-    <main class="mt-20 container mx-auto px-4">
+    <main class="mt-20 container mx-auto">
       <transition :name="transitionName" mode="out-in">
         <router-view />
       </transition>

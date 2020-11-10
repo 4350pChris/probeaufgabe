@@ -12,10 +12,13 @@
         <p class="font-light">{{ time }}</p>
       </div>
       <p class="mt-2">{{ product.description }}</p>
-      <ProductPrice
-        :currency="product.price.currency"
-        :value="product.price.value"
-      />
+      <div class="flex justify-between mt-2">
+        <ProductPrice
+          :currency="product.price.currency"
+          :value="product.price.value"
+        />
+        <ProductRating :rating="product.rating" />
+      </div>
     </div>
   </div>
 </template>
@@ -23,9 +26,11 @@
 <script>
 import { defineComponent } from "@vue/composition-api";
 import ProductPrice from "./ProductPrice.vue";
+import ProductRating from "./ProductRating.vue";
 
 export default defineComponent({
-  components: { ProductPrice },
+  name: 'product-list-item',
+  components: { ProductPrice, ProductRating },
   props: {
     product: Object,
   },

@@ -7,6 +7,9 @@
         <ProductListItem :product="product" />
       </router-link>
     </ul>
+    <div class="container fixed bottom-0 bg-white">
+      <ProductFilters />
+    </div>
     <footer>© 2020 LexMea</footer>
   </section>
 </template>
@@ -14,12 +17,14 @@
 <script>
 import { defineComponent } from "@vue/composition-api";
 import ProductListItem from "@/components/products/ProductListItem.vue";
+import ProductFilters from "@/components/products/ProductFilters.vue";
 import useApi from "@/composables/useApi";
 
 export default defineComponent({
   name: "Home",
   components: {
     ProductListItem,
+    ProductFilters,
   },
   setup() {
     const { products, title, description } = useApi();
