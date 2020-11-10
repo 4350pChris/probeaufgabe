@@ -17,7 +17,7 @@
       </div>
     </div>
     <h2 class="my-2">{{ product.description }}</h2>
-    <RememberButton :value="product.id" />
+    <RememberButton :active="active" @click="handleClick" />
     <p class="mt-2">{{ product.longDescription}} </p>
   </article>
 </template>
@@ -25,11 +25,11 @@
 <script>
 import { computed, defineComponent, toRefs } from "@vue/composition-api";
 import useApi from "@/composables/useApi";
+import useRemembering from "@/composables/useRemembering";
 import ProductPrice from "@/components/products/ProductPrice.vue";
 import ProductRating from "@/components/products/ProductRating.vue";
 import ProductReleaseDate from "@/components/products/ProductReleaseDate.vue";
 import RememberButton from "@/components/products/RememberButton.vue";
-
 
 export default defineComponent({
   name: "product-detail",
@@ -48,10 +48,23 @@ export default defineComponent({
   setup(props) {
     const { products } = useApi();
     const { id } = toRefs(props);
+
     const product = computed(() =>
       products.value.find((p) => p.id === parseInt(id.value))
     );
-    return { product };
+
+    const { remembered } = useRemembering();
+
+    const active = computed(() => remembered.value.some(r => r === parseInt(id.value)))
+    const handleClick = () => {
+      if (active.value) {
+        remembered.value = remembered.value.filter(r => r !== parseInt(id.value))
+      } else {
+        remembered.value.push(parseInt(id.value));
+      }
+    }
+
+    return { active, product, handleClick };
   },
 });
 </script>

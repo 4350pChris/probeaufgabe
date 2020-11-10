@@ -1,5 +1,5 @@
 <template>
-  <div style="min-height: 200vh">
+  <div>
     <header>
       <NavBar />
     </header>
