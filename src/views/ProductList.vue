@@ -7,10 +7,12 @@
         <ProductListItem :product="product" />
       </router-link>
     </ul>
+    <div class="mb-12">
+      <LexmeaFooter />
+    </div>
     <div class="container fixed bottom-0 bg-white">
       <ProductFilters />
     </div>
-    <footer>© 2020 LexMea</footer>
   </section>
 </template>
 
@@ -18,6 +20,7 @@
 import { defineComponent } from "@vue/composition-api";
 import ProductListItem from "@/components/products/ProductListItem.vue";
 import ProductFilters from "@/components/products/ProductFilters.vue";
+import LexmeaFooter from "@/components/LexmeaFooter.vue";
 import useApi from "@/composables/useApi";
 
 export default defineComponent({
@@ -25,6 +28,7 @@ export default defineComponent({
   components: {
     ProductListItem,
     ProductFilters,
+    LexmeaFooter,
   },
   setup() {
     const { products, title, description } = useApi();
