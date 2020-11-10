@@ -1,13 +1,11 @@
 <template>
   <section>
     <h1 class="text-2xl">{{ title }}</h1>
-    <h2 class="text-lg text-gray-700">{{description}}</h2>
+    <h2 class="text-lg text-gray-700">{{ description }}</h2>
     <ul class="mt-4">
-      <ProductListItem
-        v-for="product in products"
-        :key="product.id"
-        :product="product"
-      />
+      <router-link tag="li" :to="`/${product.id}`" class="my-2 cursor-pointer hover:shadow-lg transition duration-300 ease-in-out" v-for="product in products" :key="product.id">
+        <ProductListItem :product="product" />
+      </router-link>
     </ul>
     <footer>© 2020 LexMea</footer>
   </section>
@@ -29,7 +27,7 @@ export default defineComponent({
     return {
       products,
       title,
-      description
+      description,
     };
   },
 });
