@@ -1,13 +1,13 @@
 <template>
   <div>
-    <h1>This is a detail page</h1>
+    {{ product.id }}
   </div>
 </template>
 
 <script>
 import { defineComponent } from "@vue/composition-api";
+
 export default defineComponent({
-  name: "product-detail",
   props: {
     product: Object,
   },
