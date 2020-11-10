@@ -13,43 +13,12 @@
 </template>
 
 <script>
-import { defineComponent, computed } from "@vue/composition-api";
-import useFilters from '@/composables/useFilters';
-import useApi from '@/composables/useApi';
+import { defineComponent } from "@vue/composition-api";
 
 export default defineComponent({
   name: "product-filters",
-  setup() {
-    const { filters: filterTexts } = useApi();
-
-    const { availableFilter, rememberedFilter } = useFilters();
-
-    const filters = computed(() => filterTexts.value.length > 0 ? [
-      {
-        text: filterTexts.value[0],
-        active: !(availableFilter.value || rememberedFilter.value),
-        fn() {
-          availableFilter.value = false;
-          rememberedFilter.value = false;
-        }
-      },
-      {
-        text: filterTexts.value[1],
-        active: availableFilter.value,
-        fn() {
-          availableFilter.value = !availableFilter.value
-        }
-      },
-      {
-        text: filterTexts.value[2],
-        active: rememberedFilter.value,
-        fn() {
-          rememberedFilter.value = !rememberedFilter.value
-        }
-      }
-    ] : [])
-
-    return { filters };
-  },
+  props: {
+    filters: Array
+  }
 });
 </script>

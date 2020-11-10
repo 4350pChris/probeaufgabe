@@ -6,17 +6,11 @@ export default function useFilters(products, remembered) {
   const rememberedFilter = ref(false);
 
   const filteredProducts = computed(() => {
-    let res = products.value;
-    
-    if (availableFilter.value) {
-      res = res.filter(p => p.available)
-    }
-
-    if (rememberedFilter.value) {
-      res = res.filter(p => remembered.value.includes(p.id))
-    }
-
-    return res;
+    return products.value.filter(
+      p => availableFilter.value ? p.available : true
+    ).filter(
+      p => rememberedFilter.value ? remembered.value.includes(p.id) : true
+    )
   })
 
   return { availableFilter, rememberedFilter, filteredProducts }

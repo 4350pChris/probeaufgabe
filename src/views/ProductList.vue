@@ -11,18 +11,19 @@
       <LexmeaFooter />
     </div>
     <div class="container fixed bottom-0 bg-white">
-      <ProductFilters />
+      <ProductFilters :filters="filters"/>
     </div>
   </section>
 </template>
 
 <script>
-import { defineComponent } from "@vue/composition-api";
+import { defineComponent, computed } from "@vue/composition-api";
 import ProductListItem from "@/components/products/ProductListItem.vue";
 import ProductFilters from "@/components/products/ProductFilters.vue";
 import LexmeaFooter from "@/components/LexmeaFooter.vue";
 import useApi from "@/composables/useApi";
 import useFilters from '@/composables/useFilters';
+import useRemembering from '@/composables/useRemembering';
 
 export default defineComponent({
   name: "Home",
@@ -32,13 +33,40 @@ export default defineComponent({
     LexmeaFooter,
   },
   setup() {
-    const { products, title, description } = useApi();
-    const { filteredProducts } = useFilters(products);
+    const { filters: filterTexts, products, title, description } = useApi();
+    const { remembered } = useRemembering();
+    const { filteredProducts, availableFilter, rememberedFilter } = useFilters(products, remembered);
+
+    const filters = computed(() => filterTexts.value.length > 0 ? [
+      {
+        text: filterTexts.value[0],
+        active: !(availableFilter.value || rememberedFilter.value),
+        fn() {
+          availableFilter.value = false;
+          rememberedFilter.value = false;
+        }
+      },
+      {
+        text: filterTexts.value[1],
+        active: availableFilter.value,
+        fn() {
+          availableFilter.value = !availableFilter.value
+        }
+      },
+      {
+        text: filterTexts.value[2],
+        active: rememberedFilter.value,
+        fn() {
+          rememberedFilter.value = !rememberedFilter.value
+        }
+      }
+    ] : [])
 
     return {
       products: filteredProducts,
       title,
       description,
+      filters
     };
   },
 });
