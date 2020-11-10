@@ -1,23 +1,54 @@
 <template>
   <div class="flex w-full">
     <button
-      class="flex-grow bg-transparent text-blue-700 font-semibold py-2 px-4 border border-blue-500 rounded"
       v-for="filter in filters"
-      :key="filter"
+      :key="filter.text"
+      class="flex-grow bg-transparent font-semibold py-2 px-4 rounded transition-colors duration-300 ease-in-out"
+      :class="[filter.active ? 'text-white bg-blue-700' : 'text-blue-700 border border-blue-500']"
+      @click="filter.fn"
     >
-      {{ filter }}
+      {{ filter.text }}
     </button>
   </div>
 </template>
 
 <script>
-import { defineComponent } from "@vue/composition-api";
-import useApi from "@/composables/useApi";
+import { defineComponent, computed } from "@vue/composition-api";
+import useFilters from '@/composables/useFilters';
+import useApi from '@/composables/useApi';
 
 export default defineComponent({
   name: "product-filters",
   setup() {
-    const { filters } = useApi();
+    const { filters: filterTexts } = useApi();
+
+    const { availableFilter, rememberedFilter } = useFilters();
+
+    const filters = computed(() => filterTexts.value.length > 0 ? [
+      {
+        text: filterTexts.value[0],
+        active: !(availableFilter.value || rememberedFilter.value),
+        fn() {
+          availableFilter.value = false;
+          rememberedFilter.value = false;
+        }
+      },
+      {
+        text: filterTexts.value[1],
+        active: availableFilter.value,
+        fn() {
+          availableFilter.value = !availableFilter.value
+        }
+      },
+      {
+        text: filterTexts.value[2],
+        active: rememberedFilter.value,
+        fn() {
+          rememberedFilter.value = !rememberedFilter.value
+        }
+      }
+    ] : [])
+
     return { filters };
   },
 });

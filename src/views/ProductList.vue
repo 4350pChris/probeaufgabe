@@ -22,6 +22,7 @@ import ProductListItem from "@/components/products/ProductListItem.vue";
 import ProductFilters from "@/components/products/ProductFilters.vue";
 import LexmeaFooter from "@/components/LexmeaFooter.vue";
 import useApi from "@/composables/useApi";
+import useFilters from '@/composables/useFilters';
 
 export default defineComponent({
   name: "Home",
@@ -32,9 +33,10 @@ export default defineComponent({
   },
   setup() {
     const { products, title, description } = useApi();
+    const { filteredProducts } = useFilters(products);
 
     return {
-      products,
+      products: filteredProducts,
       title,
       description,
     };

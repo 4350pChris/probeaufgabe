@@ -7,7 +7,12 @@
         :alt="`image for ${product.name}`"
       />
       <div class="flex flex-col ml-4">
-        <h1 class="font-bold">{{ product.name }}</h1>
+        <h1
+          class="font-bold transition-colors duration-300 ease-in-out"
+          :class="{ 'text-blue-600': active }"
+        >
+          {{ product.name }}
+        </h1>
         <ProductPrice
           :value="product.price.value"
           :currency="product.price.currency"
@@ -18,7 +23,7 @@
     </div>
     <h2 class="my-2">{{ product.description }}</h2>
     <RememberButton :active="active" @click="handleClick" />
-    <p class="mt-2">{{ product.longDescription}} </p>
+    <p class="mt-2">{{ product.longDescription }}</p>
   </article>
 </template>
 
@@ -55,14 +60,19 @@ export default defineComponent({
 
     const { remembered } = useRemembering();
 
-    const active = computed(() => remembered.value.some(r => r === parseInt(id.value)))
+    const active = computed(() =>
+      remembered.value.includes(parseInt(id.value))
+    );
+
     const handleClick = () => {
       if (active.value) {
-        remembered.value = remembered.value.filter(r => r !== parseInt(id.value))
+        remembered.value = remembered.value.filter(
+          (r) => r !== parseInt(id.value)
+        );
       } else {
         remembered.value.push(parseInt(id.value));
       }
-    }
+    };
 
     return { active, product, handleClick };
   },
